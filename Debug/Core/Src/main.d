@@ -22,14 +22,15 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash_ex.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c_ex.h \
+ ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_iwdg.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr_ex.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi_ex.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h \
  ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h \
- ../Core/Inc/dma.h ../Core/Inc/main.h ../Core/Inc/spi.h \
- ../Core/Inc/usart.h ../Core/Inc/gpio.h \
+ ../Core/Inc/dma.h ../Core/Inc/main.h ../Core/Inc/iwdg.h \
+ ../Core/Inc/spi.h ../Core/Inc/usart.h ../Core/Inc/gpio.h \
  C:/Users/Mehmet\ Dincer/Desktop/Embedded\ systems/NRF24/001_UGV_GROUND_STATION/UGV/Main/ugvMain.h \
  C:/Users/Mehmet\ Dincer/Desktop/Embedded\ systems/NRF24/001_UGV_GROUND_STATION/UGV/Drivers/SX1278/SX1278.h \
  C:/Users/Mehmet\ Dincer/Desktop/Embedded\ systems/NRF24/001_UGV_GROUND_STATION/UGV/Drivers/SX1278/SX1278_hw.h \
@@ -59,6 +60,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_flash_ex.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_i2c_ex.h:
+../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_iwdg.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_pwr_ex.h:
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_spi.h:
@@ -67,6 +69,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart_ex.h:
 ../Core/Inc/dma.h:
 ../Core/Inc/main.h:
+../Core/Inc/iwdg.h:
 ../Core/Inc/spi.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/gpio.h:

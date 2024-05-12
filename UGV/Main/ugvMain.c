@@ -62,6 +62,7 @@ static void systemInitialize()
 {
 	init_PEC15_Table();
 	loraInit(&SX1278_hw, &SX1278);
+	HAL_IWDG_Init(&hiwdg);
 }
 
 /**
@@ -118,6 +119,8 @@ void loraDioCallBack()
 
 			transtmitPackage(&loraDataRx);
 		}
+
+		HAL_IWDG_Refresh(&hiwdg);
 	}
 }
 

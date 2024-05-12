@@ -17,6 +17,7 @@
 #include "gpio.h"
 #include "spi.h"
 #include "usart.h"
+#include "iwdg.h"
 
 //<<<<<<<<<<<<<<<<<<<<<-MACROS->>>>>>>>>>>>>>>>>>>
 #define LORA_TIMEOUT			(3)
