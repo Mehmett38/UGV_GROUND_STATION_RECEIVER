@@ -27,7 +27,6 @@
 /* USER CODE BEGIN Includes */
 
 #include "ugvMain.h"
-#include "crc15.h"
 
 /* USER CODE END Includes */
 
@@ -61,8 +60,6 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-HAL_StatusTypeDef status;
-uint32_t tickTime = 0;
 
 /* USER CODE END 0 */
 
@@ -99,60 +96,60 @@ int main(void)
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-  init_PEC15_Table();
+//  init_PEC15_Table();
+//
+//  LoraData loraTxTry =
+//  {
+//		  .azimuth = 50,
+//		  .latitudeDegree = 49,
+//		  .latitudeMinute = 30,
+//		  .latitudeSecond = 3.14f,
+//		  .longitudeDegree = 55,
+//		  .longitudeMinute = 20,
+//		  .longitudeSecond = 3.14f,
+//		  .numberOfSatellite = 4,
+//		  .speed = 3.14f,
+//		  .gpsState = WRONG_DATA,
+//		  .ledState = FRONT_LED_ON,
+//		  .crcLsb = 0,
+//		  .crcMsb = 0,
+//		  .carriage = '\r',
+//		  .newline = '\n'
+//  };
 
-  LoraData loraTxTry =
-  {
-		  .azimuth = 50,
-		  .latitudeDegree = 49,
-		  .latitudeMinute = 30,
-		  .latitudeSecond = 3.14f,
-		  .longitudeDegree = 55,
-		  .longitudeMinute = 20,
-		  .longitudeSecond = 3.14f,
-		  .numberOfSatellite = 4,
-		  .speed = 3.14f,
-		  .gpsState = WRONG_DATA,
-		  .ledState = FRONT_LED_ON,
-		  .crcLsb = 0,
-		  .crcMsb = 0,
-		  .carriage = '\r',
-		  .newline = '\n'
-  };
-
-  char dataBuffer[25];
-  uint32_t u32TempVar;
-
-  dataBuffer[0] = (loraTxTry.azimuth >> 0) & 0xFF;
-  dataBuffer[1] = (loraTxTry.azimuth >> 8) & 0xFF;
-  dataBuffer[2] = loraTxTry.latitudeDegree;
-  dataBuffer[3] = loraTxTry.latitudeMinute;
-  u32TempVar = *((uint32_t*)&loraTxTry.latitudeSecond);
-  dataBuffer[4] = (u32TempVar >> 0) & 0xFF;
-  dataBuffer[5] = (u32TempVar >> 8) & 0xFF;
-  dataBuffer[6] = (u32TempVar >> 16) & 0xFF;
-  dataBuffer[7] = (u32TempVar >> 24) & 0xFF;
-  dataBuffer[8] = loraTxTry.longitudeDegree;
-  dataBuffer[9] = loraTxTry.longitudeMinute;
-  u32TempVar = *((uint32_t*)&loraTxTry.longitudeSecond);
-  dataBuffer[10] = (u32TempVar >> 0) & 0xFF;
-  dataBuffer[11] = (u32TempVar >> 8) & 0xFF;
-  dataBuffer[12] = (u32TempVar >> 16) & 0xFF;
-  dataBuffer[13] = (u32TempVar >> 24) & 0xFF;
-  dataBuffer[14] = loraTxTry.numberOfSatellite;
-  u32TempVar = *((uint32_t*)&loraTxTry.speed);
-  dataBuffer[15] = (u32TempVar >> 0) & 0xFF;
-  dataBuffer[16] = (u32TempVar >> 8) & 0xFF;
-  dataBuffer[17] = (u32TempVar >> 16) & 0xFF;
-  dataBuffer[18] = (u32TempVar >> 24) & 0xFF;
-  dataBuffer[19] = loraTxTry.ledState;
-  dataBuffer[20] = loraTxTry.gpsState;
-
-  uint16_t pec = AE_pec15((uint8_t*)dataBuffer, 21);
-  dataBuffer[21] = (pec >> 0) & 0xFF;
-  dataBuffer[22] = (pec >> 8) & 0xFF;
-  dataBuffer[23] = loraTxTry.carriage;
-  dataBuffer[24] = loraTxTry.newline;
+//  char dataBuffer[25];
+//  uint32_t u32TempVar;
+//
+//  dataBuffer[0] = (loraTxTry.azimuth >> 0) & 0xFF;
+//  dataBuffer[1] = (loraTxTry.azimuth >> 8) & 0xFF;
+//  dataBuffer[2] = loraTxTry.latitudeDegree;
+//  dataBuffer[3] = loraTxTry.latitudeMinute;
+//  u32TempVar = *((uint32_t*)&loraTxTry.latitudeSecond);
+//  dataBuffer[4] = (u32TempVar >> 0) & 0xFF;
+//  dataBuffer[5] = (u32TempVar >> 8) & 0xFF;
+//  dataBuffer[6] = (u32TempVar >> 16) & 0xFF;
+//  dataBuffer[7] = (u32TempVar >> 24) & 0xFF;
+//  dataBuffer[8] = loraTxTry.longitudeDegree;
+//  dataBuffer[9] = loraTxTry.longitudeMinute;
+//  u32TempVar = *((uint32_t*)&loraTxTry.longitudeSecond);
+//  dataBuffer[10] = (u32TempVar >> 0) & 0xFF;
+//  dataBuffer[11] = (u32TempVar >> 8) & 0xFF;
+//  dataBuffer[12] = (u32TempVar >> 16) & 0xFF;
+//  dataBuffer[13] = (u32TempVar >> 24) & 0xFF;
+//  dataBuffer[14] = loraTxTry.numberOfSatellite;
+//  u32TempVar = *((uint32_t*)&loraTxTry.speed);
+//  dataBuffer[15] = (u32TempVar >> 0) & 0xFF;
+//  dataBuffer[16] = (u32TempVar >> 8) & 0xFF;
+//  dataBuffer[17] = (u32TempVar >> 16) & 0xFF;
+//  dataBuffer[18] = (u32TempVar >> 24) & 0xFF;
+//  dataBuffer[19] = loraTxTry.ledState;
+//  dataBuffer[20] = loraTxTry.gpsState;
+//
+//  uint16_t pec = AE_pec15((uint8_t*)dataBuffer, 21);
+//  dataBuffer[21] = (pec >> 0) & 0xFF;
+//  dataBuffer[22] = (pec >> 8) & 0xFF;
+//  dataBuffer[23] = loraTxTry.carriage;
+//  dataBuffer[24] = loraTxTry.newline;
 
   /* USER CODE END 2 */
 
@@ -164,17 +161,17 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  uint32_t tick1 = HAL_GetTick();
-	  status = HAL_UART_Transmit(&huart2, (uint8_t*)dataBuffer, sizeof(dataBuffer), 10);
+//	  uint32_t tick1 = HAL_GetTick();
+//	  status = HAL_UART_Transmit(&huart2, (uint8_t*)dataBuffer, sizeof(dataBuffer), 10);
+//
+//	  uint32_t tick2 = HAL_GetTick();
+//
+//	  tickTime = tick2 - tick1;
+//	  HAL_Delay(40);
 
-	  uint32_t tick2 = HAL_GetTick();
 
-	  tickTime = tick2 - tick1;
-	  HAL_Delay(40);
-
-
-//	  ugvMain();
-//	  break;
+	  ugvMain();
+	  break;
   }
   /* USER CODE END 3 */
 }

@@ -23,6 +23,7 @@ uint8_t loraRx[LORA_RX_SIZE];
 uint8_t loraTx[LORA_TX_SIZE];
 LoraData loraDataRx;
 LoraData loraDataTx;
+uint8_t loraSendFlag = 0;
 
 
 /**
@@ -43,7 +44,13 @@ void ugvMain(void)
 		loreRxTxMutex = LORA_RX_STATUS;
 		ret = SX1278_LoRaEntryRx(&SX1278, sizeof(loraRx), LORA_TIMEOUT);
 
-		HAL_Delay(100);
+//		if(loraSendFlag == 1)
+//		{
+//			transtmitPackage(&loraDataRx);
+//			loraSendFlag = 0;
+//		}
+
+		HAL_Delay(1000);
 	}
 }
 
@@ -108,9 +115,53 @@ void loraDioCallBack()
 		{
 			loraDataRx.carriage = '\r';
 			loraDataRx.newline = '\n';
-			HAL_UART_Transmit_DMA(&huart2, (uint8_t*)&loraDataRx, sizeof(LoraData));
+
+			transtmitPackage(&loraDataRx);
 		}
 	}
+}
+
+/**
+ * @brief update the values and trasmit to pc
+ */
+
+void transtmitPackage(LoraData * loraDat)
+{
+	uint8_t dataBuffer[25];
+	uint32_t u32TempVar;
+
+	dataBuffer[0] = (loraDat->azimuth >> 0) & 0xFF;
+	dataBuffer[1] = (loraDat->azimuth >> 8) & 0xFF;
+	dataBuffer[2] = loraDat->latitudeDegree;
+	dataBuffer[3] = loraDat->latitudeMinute;
+	u32TempVar = *((uint32_t*)&loraDat->latitudeSecond);
+	dataBuffer[4] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[5] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[6] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[7] = (u32TempVar >> 24) & 0xFF;
+	dataBuffer[8] = loraDat->longitudeDegree;
+	dataBuffer[9] = loraDat->longitudeMinute;
+	u32TempVar = *((uint32_t*)&loraDat->longitudeSecond);
+	dataBuffer[10] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[11] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[12] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[13] = (u32TempVar >> 24) & 0xFF;
+	dataBuffer[14] = loraDat->numberOfSatellite;
+	u32TempVar = *((uint32_t*)&loraDat->speed);
+	dataBuffer[15] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[16] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[17] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[18] = (u32TempVar >> 24) & 0xFF;
+	dataBuffer[19] = loraDat->ledState;
+	dataBuffer[20] = loraDat->gpsState;
+
+	uint16_t pec = AE_pec15((uint8_t*)dataBuffer, 21);
+	dataBuffer[21] = (pec >> 0) & 0xFF;
+	dataBuffer[22] = (pec >> 8) & 0xFF;
+	dataBuffer[23] = loraDat->carriage;
+	dataBuffer[24] = loraDat->newline;
+
+	HAL_UART_Transmit(&huart2, dataBuffer, sizeof(dataBuffer), 20);
 }
 
 

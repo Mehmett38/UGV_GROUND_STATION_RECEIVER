@@ -1,4 +1,5 @@
-../UGV/Main/ugvMain.c:32:6:ugvMain	8	static
-../UGV/Main/ugvMain.c:54:13:systemInitialize	8	static
-../UGV/Main/ugvMain.c:66:12:loraInit	48	static
-../UGV/Main/ugvMain.c:93:6:loraDioCallBack	16	static
+../UGV/Main/ugvMain.c:33:6:ugvMain	8	static
+../UGV/Main/ugvMain.c:61:13:systemInitialize	8	static
+../UGV/Main/ugvMain.c:73:12:loraInit	48	static
+../UGV/Main/ugvMain.c:100:6:loraDioCallBack	16	static
+../UGV/Main/ugvMain.c:128:6:transtmitPackage	48	static

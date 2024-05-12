@@ -85,6 +85,7 @@ typedef struct{
 //<<<<<<<<<<<<<<<-FUNCTION PROTOTYPES->>>>>>>>>>>>>>>>
 void ugvMain(void);
 void loraDioCallBack();
+void transtmitPackage(LoraData * loraDat);
 
 
 #endif /* MAIN_UGVMAIN_H_ */
