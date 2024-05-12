@@ -38,6 +38,13 @@ typedef enum{
 	ALL_LED_ON,
 }LED_STATE;
 
+typedef enum{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST,
+}Location;
+
 //<<<<<<<<<<<<<<<<<<<<<-STRUCTURES->>>>>>>>>>>>>>>>>>>
 
 typedef struct{
@@ -49,11 +56,27 @@ typedef struct{
 
 	uint8_t longitudeDegree;	//!< this variables are float convert them HEX form
 	uint8_t longitudeMinute;	//!< this variables are float convert them HEX form
+	uint8_t numberOfSatellite;
+	uint8_t second;
 	float longitudeSecond;	//!< this variables are float convert them HEX form
 
-	uint8_t numberOfSatellite;
 
 	float speed;				//!< this variables are float convert them HEX form
+	float Ax;
+	float Ay;
+
+    float Temperature;
+
+    float KalmanAngleX;
+    float KalmanAngleY;
+
+	uint8_t minute;
+	uint8_t hour;
+	uint8_t day;
+	uint8_t month;
+
+    Location locationLat;
+    Location locationLong;
 
 	LED_STATE ledState;
 
@@ -65,21 +88,6 @@ typedef struct{
 	uint8_t carriage;		//!< \r
 	uint8_t newline;		//!< \n
 
-//	uint8_t azimuthLsb;
-//	uint8_t azimuthMsb;
-//
-//	uint8_t latitudeDegree;
-//	uint8_t latitudeMinute;
-//	uint8_t latitudeSecond;
-
-//	uint8_t longitudeDegree;
-//	uint8_t longitudeMinute;
-//	uint8_t longitudeSecond;
-
-//	uint8_t numberOfSatellite;
-
-//	uint8_t height;
-//	uint32_t speed;
 }LoraData;
 
 //<<<<<<<<<<<<<<<-FUNCTION PROTOTYPES->>>>>>>>>>>>>>>>

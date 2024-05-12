@@ -110,7 +110,7 @@ void loraDioCallBack()
 
 		SX1278_read(&SX1278, (uint8_t*)&loraDataRx, ret);
 
-		uint16_t crc = AE_pec15((uint8_t*)&loraDataRx, (sizeof(LoraData) - 6));
+		uint16_t crc = AE_pec15((uint8_t*)&loraDataRx, (sizeof(LoraData) - 4));
 		if(crc == (loraDataRx.crcLsb << 0 | loraDataRx.crcMsb << 8))
 		{
 			loraDataRx.carriage = '\r';
@@ -127,41 +127,84 @@ void loraDioCallBack()
 
 void transtmitPackage(LoraData * loraDat)
 {
-	uint8_t dataBuffer[25];
+	uint8_t dataBuffer[52];
 	uint32_t u32TempVar;
 
-	dataBuffer[0] = (loraDat->azimuth >> 0) & 0xFF;
-	dataBuffer[1] = (loraDat->azimuth >> 8) & 0xFF;
-	dataBuffer[2] = loraDat->latitudeDegree;
-	dataBuffer[3] = loraDat->latitudeMinute;
-	u32TempVar = *((uint32_t*)&loraDat->latitudeSecond);
+	dataBuffer[0] = (loraDat->azimuth >> 0) & 0xFF;			//!< azimuth lsb
+	dataBuffer[1] = (loraDat->azimuth >> 8) & 0xFF;			//!< azimuth msb
+	dataBuffer[2] = loraDat->latitudeDegree;				//!< latitude degree
+	dataBuffer[3] = loraDat->latitudeMinute;				//!< latitude minute
+
+	u32TempVar = *((uint32_t*)&loraDat->latitudeSecond);	//!< latitude second
 	dataBuffer[4] = (u32TempVar >> 0) & 0xFF;
 	dataBuffer[5] = (u32TempVar >> 8) & 0xFF;
 	dataBuffer[6] = (u32TempVar >> 16) & 0xFF;
 	dataBuffer[7] = (u32TempVar >> 24) & 0xFF;
-	dataBuffer[8] = loraDat->longitudeDegree;
-	dataBuffer[9] = loraDat->longitudeMinute;
-	u32TempVar = *((uint32_t*)&loraDat->longitudeSecond);
-	dataBuffer[10] = (u32TempVar >> 0) & 0xFF;
-	dataBuffer[11] = (u32TempVar >> 8) & 0xFF;
-	dataBuffer[12] = (u32TempVar >> 16) & 0xFF;
-	dataBuffer[13] = (u32TempVar >> 24) & 0xFF;
-	dataBuffer[14] = loraDat->numberOfSatellite;
-	u32TempVar = *((uint32_t*)&loraDat->speed);
-	dataBuffer[15] = (u32TempVar >> 0) & 0xFF;
-	dataBuffer[16] = (u32TempVar >> 8) & 0xFF;
-	dataBuffer[17] = (u32TempVar >> 16) & 0xFF;
-	dataBuffer[18] = (u32TempVar >> 24) & 0xFF;
-	dataBuffer[19] = loraDat->ledState;
-	dataBuffer[20] = loraDat->gpsState;
 
-	uint16_t pec = AE_pec15((uint8_t*)dataBuffer, 21);
-	dataBuffer[21] = (pec >> 0) & 0xFF;
-	dataBuffer[22] = (pec >> 8) & 0xFF;
-	dataBuffer[23] = loraDat->carriage;
-	dataBuffer[24] = loraDat->newline;
+	dataBuffer[8] = loraDat->longitudeDegree;				//!< longitude degree
+	dataBuffer[9] = loraDat->longitudeMinute;				//!< longitude minute
+	dataBuffer[10] = loraDat->numberOfSatellite;			//!< number of satellite
+	dataBuffer[11] = loraDat->second;						//!< gps second
 
-	HAL_UART_Transmit(&huart2, dataBuffer, sizeof(dataBuffer), 20);
+	u32TempVar = *((uint32_t*)&loraDat->longitudeSecond);	//!< longitude second
+	dataBuffer[12] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[13] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[14] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[15] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->speed);				//!< gps speed
+	dataBuffer[16] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[17] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[18] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[19] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->Ax);				//!< mpu accelartion x
+	dataBuffer[20] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[21] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[22] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[23] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->Ay);				//!< MPU acceleration y
+	dataBuffer[24] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[25] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[26] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[27] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->Temperature);		//!< MPU temperature
+	dataBuffer[28] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[29] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[30] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[31] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->KalmanAngleX);		//!< MPU kalman x angle
+	dataBuffer[32] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[33] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[34] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[35] = (u32TempVar >> 24) & 0xFF;
+
+	u32TempVar = *((uint32_t*)&loraDat->KalmanAngleY);		//!< MPU kalman y angle
+	dataBuffer[36] = (u32TempVar >> 0) & 0xFF;
+	dataBuffer[37] = (u32TempVar >> 8) & 0xFF;
+	dataBuffer[38] = (u32TempVar >> 16) & 0xFF;
+	dataBuffer[39] = (u32TempVar >> 24) & 0xFF;
+
+	dataBuffer[40] = loraDat->minute;						//!< gps minute
+	dataBuffer[41] = loraDat->hour;							//!< gps hour
+	dataBuffer[42] = loraDat->day;							//!< gps day
+	dataBuffer[43] = loraDat->month;						//!< gps month
+
+	dataBuffer[44] = loraDat->locationLat;					//!< gps latitude location
+	dataBuffer[45] = loraDat->locationLong;					//!< gps longitude location
+	dataBuffer[46] = loraDat->ledState;
+	dataBuffer[47] = loraDat->gpsState;
+
+	uint16_t pec = AE_pec15((uint8_t*)dataBuffer, 48);
+	dataBuffer[48] = (pec >> 0) & 0xFF;
+	dataBuffer[49] = (pec >> 8) & 0xFF;
+	dataBuffer[50] = loraDat->carriage;
+	dataBuffer[51] = loraDat->newline;
+
+	HAL_UART_Transmit(&huart2, dataBuffer, sizeof(dataBuffer), 52);
 }
 
 
